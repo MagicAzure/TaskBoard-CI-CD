@@ -64,3 +64,9 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: .
+          
+      - name: Generate db schema
+        run: |
+          cd /home/site/wwwroot
+          ./migrate
+
