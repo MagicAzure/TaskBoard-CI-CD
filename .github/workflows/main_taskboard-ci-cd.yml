@@ -16,6 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Replace connection string in appsettings.json
+        run: jq '.ConnectionStrings.DefaultConnection = "${{ secrets.CONNECTION_STRING }}"' TaskBoard.WebApp/appsettings.json > appsettings.json.tmp && mv appsettings.json.tmp TaskBoard.WebApp/appsettings.json
+
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
@@ -57,7 +60,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'taskboard-ci-cd'
+          app-name: 'taskboard-app-actions'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: .
