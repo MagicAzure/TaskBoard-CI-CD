@@ -66,7 +66,5 @@ jobs:
           package: .
           
       - name: Generate db schema
-        run: |
-          cd /home/site/wwwroot
-          ./migrate
+        run: ./${{env.DOTNET_ROOT}}/myapp/migrate
 
