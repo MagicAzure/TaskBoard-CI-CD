@@ -12,9 +12,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
       - uses: actions/checkout@v2
@@ -39,6 +36,12 @@ jobs:
 
       - name: dotnet bundle migration
         run: dotnet ef migrations bundle -p TaskBoard.WebApp/TaskBoard.WebApp.csproj -o ${{env.DOTNET_ROOT}}/myapp/migrate
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
     runs-on: ubuntu-latest
